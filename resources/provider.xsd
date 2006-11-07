@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="INetVODProviderRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Version">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RequestID" type="RequestID"/>
+				<xs:element ref="Authenticate"/>
+				<xs:element ref="RequestData"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="INetVODProviderResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestID" type="RequestID"/>
+				<xs:element name="StatusCode" type="xs:int"/>
+				<xs:element ref="ResponseData" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RequestData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RequestType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern
+								value="PingRqst|EnrollRqst|ShowListRqst|ShowDetailRqst|CheckShowAvailRqst|RentShowRqst|WatchShowRqst|ReleaseShowRqst"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:choice>
+					<xs:element ref="PingRqst"/>
+					<xs:element ref="EnrollRqst"/>
+					<xs:element ref="ShowListRqst"/>
+					<xs:element ref="ShowDetailRqst"/>
+					<xs:element ref="CheckShowAvailRqst"/>
+					<xs:element ref="RentShowRqst"/>
+					<xs:element ref="WatchShowRqst"/>
+					<xs:element ref="ReleaseShowRqst"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ResponseData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ResponseType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern
+								value="PingResp|EnrollResp|ShowListResp|ShowDetailResp|CheckShowAvailResp|RentShowResp|WatchShowResp|ReleaseShowResp"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:choice>
+					<xs:element ref="PingResp"/>
+					<xs:element ref="EnrollResp"/>
+					<xs:element ref="ShowListResp"/>
+					<xs:element ref="ShowDetailResp"/>
+					<xs:element ref="CheckShowAvailResp"/>
+					<xs:element ref="RentShowResp"/>
+					<xs:element ref="WatchShowResp"/>
+					<xs:element ref="ReleaseShowResp"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PingRqst"/>
+	<xs:element name="PingResp"/>
+	<xs:element name="EnrollRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UserID" type="UserID"/>
+				<xs:element name="Password" type="Password"/>
+				<xs:element name="FirstName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LastName">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Email">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="64"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BirthDate" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="ShippingAddress" type="Address" minOccurs="0"/>
+				<xs:element name="BillingAddress" type="Address" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="EnrollResp"/>
+	<xs:element name="ShowListRqst"/>
+	<xs:element name="ShowListResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ShowDetailRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ShowDetailResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ShowDetail" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckShowAvailRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID"/>
+				<xs:element ref="ShowFormat"/>
+				<xs:element name="ShowCost" type="ShowCost"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckShowAvailResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowCost" type="ShowCost"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RentShowRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID"/>
+				<xs:element name="PlayerIPAddress" type="PlayerIPAddress"/>
+				<xs:element ref="ShowFormat"/>
+				<xs:element name="ApprovedCost" type="ShowCost"/>
+				<xs:element ref="Payment" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RentShowResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AvailableUntil" type="xs:dateTime" minOccurs="0"/>
+				<xs:element ref="License" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WatchShowRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID"/>
+				<xs:element name="PlayerIPAddress" type="PlayerIPAddress"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WatchShowResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AvailableUntil" type="xs:dateTime" minOccurs="0"/>
+				<xs:element ref="License"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReleaseShowRqst">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReleaseShowResp"/>
+	<xs:element name="Authenticate">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AdminUserID" type="UserID"/>
+				<xs:element name="AdminPassword" type="Password"/>
+				<xs:element name="MemberUserID" type="UserID" minOccurs="0"/>
+				<xs:element name="MemberPassword" type="Password" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Address">
+		<xs:sequence>
+			<xs:element name="AddrStreet1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="AddrStreet2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="City">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="State">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PostalCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Country" type="CountryID"/>
+			<xs:element name="Phone">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ShowDetail">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowID" type="ShowID"/>
+				<xs:element name="Name">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="64"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EpisodeName" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="64"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EpisodeNumber" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReleasedOn" type="xs:date" minOccurs="0"/>
+				<xs:element name="ReleasedYear" type="xs:short" minOccurs="0"/>
+				<xs:element name="Description" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RunningMins" type="xs:short" minOccurs="0"/>
+				<xs:element name="PictureURL" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="4384"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CategoryID" type="CategoryID" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="RatingID" type="RatingID" minOccurs="0"/>
+				<xs:element name="LanguageID" type="LanguageID"/>
+				<xs:element name="IsAdult" type="xs:boolean"/>
+				<xs:element ref="ShowRental" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ShowRental">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ShowFormat" maxOccurs="unbounded"/>
+				<xs:element name="ShowCost" type="ShowCost" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ShowFormat">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MediaEncoding"/>
+				<xs:element ref="MediaContainer"/>
+				<xs:element name="HorzResolution" type="xs:short"/>
+				<xs:element name="VertResolution" type="xs:short"/>
+				<xs:element name="FramesPerSecond" type="xs:short"/>
+				<xs:element name="BitRate" type="xs:short"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Money">
+		<xs:sequence>
+			<xs:element name="CurrencyID" type="CurrencyID"/>
+			<xs:element name="Amount" type="xs:double"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ShowCost">
+		<xs:sequence>
+			<xs:element ref="ShowCostType"/>
+			<xs:element name="Cost" type="Money" minOccurs="0"/>
+			<xs:element name="CostDisplay">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RentalWindowDays" type="xs:short" minOccurs="0"/>
+			<xs:element name="RentalPeriodHours" type="xs:short" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Payment">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="PaymentType"/>
+				<xs:element ref="CreditCard" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreditCard">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="NameOnCC">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="64"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CCType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CCNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CCSIC" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ExpireDate">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="6"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BillingAddress" type="Address"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="License">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="LicenseMethod"/>
+				<xs:element name="ShowURL">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="4096"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LicenseURL" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="4096"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="RequestID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Password">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ShowID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountryID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CategoryID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RatingID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PlayerIPAddress">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LanguageID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="MediaEncoding">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern
+					value="WMV9|RV9|SVQ3|DivX5|XviD"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MediaContainer">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern
+					value="ASF|RM|RTSP|AVI|MOV"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:simpleType name="CurrencyID">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ShowCostType">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern
+					value="Free|Subscription|PayPerView"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="PaymentType">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern
+					value="ChargeAccount|CreditCard"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="LicenseMethod">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern
+					value="URLOnly|LicenseServer"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+</xs:schema>
